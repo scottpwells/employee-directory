@@ -2,30 +2,30 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const Table = () => {
-  const [users, setUsers] = useState([]);
-  const [usersToDisplay, setUsersToDisplay] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [employeesToDisplay, setEmployeesToDisplay] = useState([]);
   const [sortDirection, setSortDirection] = useState("asc");
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     axios.get("https://randomuser.me/api/?results=50").then((response) => {
       console.log(response.data);
-      setUsersToDisplay(response.data.results);
-      setUsers(response.data.results);
+      setEmployeesToDisplay(response.data.results);
+      setEmployees(response.data.results);
     });
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const filteredUsers = users.filter((user) => {
-      return user.phone.includes(searchTerm);
+    const filteredEmployees = employees.filter((employee) => {
+      return employee.phone.includes(searchTerm);
     });
 
-    setUsersToDisplay(filteredUsers);
+    setEmployeesToDisplay(filteredEmployees);
   };
 
   const handleReset = () => {
-    setUsersToDisplay(users);
+    setEmployeesToDisplay(employees);
   };
 
   const sortByName = () => {
@@ -39,8 +39,8 @@ const Table = () => {
   };
 
   const sortByNameAsc = () => {
-    const tempUsers = [...users];
-    const sortedUsers = tempUsers.sort((a, b) => {
+    const tempEmployees = [...employees];
+    const sortedEmployees = tempEmployees.sort((a, b) => {
       const aValue = a.name.first;
       const bValue = b.name.first;
       if (aValue < bValue) {
@@ -51,13 +51,13 @@ const Table = () => {
       }
       return 0;
     });
-    console.log(sortedUsers);
-    setUsersToDisplay(sortedUsers);
+    console.log(sortedEmployees);
+    setEmployeesToDisplay(sortedEmployees);
   };
 
   const sortByNameDesc = () => {
-    const tempUsers = [...users];
-    const sortedUsers = tempUsers.sort((a, b) => {
+    const tempEmployees = [...employees];
+    const sortedEmployees = tempEmployees.sort((a, b) => {
       const aValue = a.name.first;
       const bValue = b.name.first;
       if (aValue > bValue) {
@@ -68,8 +68,8 @@ const Table = () => {
       }
       return 0;
     });
-    console.log(sortedUsers);
-    setUsersToDisplay(sortedUsers);
+    console.log(sortedEmployees);
+    setEmployeesToDisplay(sortedEmployees);
   };
 
   return (
@@ -110,18 +110,18 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {usersToDisplay.map((user, index) => (
+            {employeesToDisplay.map((employee, index) => (
               <tr key={index}>
-                <th scope="row">{user.id.value}</th>
+                <th scope="row">{employee.id.value}</th>
                 <td>
-                  <img src={user.picture.thumbnail} alt={user.name.first}></img>
+                  <img src={employee.picture.thumbnail} alt={employee.name.first}></img>
                 </td>
                 <td>
-                  {user.name.first} {user.name.last}
+                  {employee.name.first} {employee.name.last}
                 </td>
-                <td>{user.email}</td>
-                <td>{user.phone}</td>
-                <td>{user.dob.date}</td>
+                <td>{employee.email}</td>
+                <td>{employee.phone}</td>
+                <td>{employee.dob.date}</td>
               </tr>
             ))}
           </tbody>
